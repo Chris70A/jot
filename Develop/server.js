@@ -15,15 +15,16 @@
 // import the Express.js framework
 const express = require('express');
 
+// imports modules
+const apiRoute = require('./routes/apiRoute');
+const htmlRoute = require('./routes/htmlRoute');
+
 //creates a new instance
 const app = express();
 
-
-const path = require('path');
-
-
 // listen for incoming requests
 const PORT = process.env.PORT || 3001;
+
 
 // MIDDLEWARE parse incoming urlencoded request
 app.use(express.urlencoded({ extended: true}));
@@ -32,6 +33,13 @@ app.use(express.json());
 
 // access to public folder
 app.use(express.static('public'));
+
+//middleware at the root path
+app.use('/', htmlRoute);
+
+// MIDDLEWARE to handle requests with paths starting with /api.
+app.use('/api', apiRoute);
+
 
 // listening on the specified PORT
 app.listen(PORT, () => {
