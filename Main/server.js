@@ -12,39 +12,23 @@
 // WHEN I click on the Write icon in the navigation at the top of the page
 // THEN I am presented with empty fields to enter a new note title and the note’s text in the right-hand column
 
-// import the Express.js framework
 const express = require('express');
-
-// imports modules
 const apiRoute = require('./routes/apiRoute');
 const htmlRoute = require('./routes/htmlRoute');
 
-//creates a new instance
+// Initialize the app and create a port
 const app = express();
-
-// listen for incoming requests
 const PORT = process.env.PORT || 3001;
 
-
-// MIDDLEWARE parse incoming urlencoded request
-app.use(express.urlencoded({ extended: true}));
-// MIDDLEWARE parse incoming JSON request
+// Set up body parsing, static, and route middleware
 app.use(express.json());
-
-// access to public folder
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-
-//middleware at the root path
+app.use('/api', apiRoute);
 app.use('/', htmlRoute);
 
-// MIDDLEWARE to handle requests with paths starting with /api.
-app.use('/api', apiRoute);
-
-
-// listening on the specified PORT
-app.listen(PORT, () => {
-    console.log(`API sever is located on port: ${PORT}`);
-})
+// Start the server on the port
+app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
 
 
 
